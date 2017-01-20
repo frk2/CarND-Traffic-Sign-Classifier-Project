@@ -11785,10 +11785,6 @@ div#notebook {
     <span class="n">train</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">testing_file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">test</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;trainproc.p&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">X_proc</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;testproc.p&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">X_testproc</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
         
 <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">],</span> <span class="n">train</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span>
@@ -11879,7 +11875,7 @@ Number of classes = 43
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[50]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### Data exploration visualization goes here.</span>
@@ -19845,7 +19841,7 @@ DAYnjfkhGwwGg8FJY37IBoPBYHDS+H8JcUyIH4+F2QAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### Preprocess the data here.</span>
@@ -19853,6 +19849,7 @@ DAYnjfkhGwwGg8FJY37IBoPBYHDS+H8JcUyIH4+F2QAAAABJRU5ErkJggg==
 <span class="kn">import</span> <span class="nn">cv2</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
 <span class="kn">from</span> <span class="nn">skimage</span> <span class="k">import</span> <span class="n">exposure</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
 
 <span class="k">def</span> <span class="nf">preprocessImages</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
     <span class="n">X</span> <span class="o">=</span> <span class="mf">0.299</span> <span class="o">*</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.587</span> <span class="o">*</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.114</span> <span class="o">*</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">]</span> <span class="c1">#Y conversion</span>
@@ -19865,8 +19862,19 @@ DAYnjfkhGwwGg8FJY37IBoPBYHDS+H8JcUyIH4+F2QAAAABJRU5ErkJggg==
     <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
     <span class="k">return</span> <span class="n">X</span>
 
-<span class="c1">#X_proc = preprocessImages(X_train)</span>
-<span class="c1">#X_testproc = preprocessImages(X_test)</span>
+<span class="n">my_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;trainproc.p&quot;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">my_file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;trainproc.p&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">X_proc</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;testproc.p&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">X_testproc</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">X_proc</span> <span class="o">=</span> <span class="n">preprocessImages</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+    <span class="n">X_testproc</span> <span class="o">=</span> <span class="n">preprocessImages</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;trainproc.p&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">X_proc</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;testproc.p&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">X_testproc</span><span class="p">,</span><span class="n">f</span><span class="p">)</span>
 
 
 <span class="c1">#gray_x_train = gray_x_train.reshape(gray_x_train.shape[0],-1).astype(np.float32)</span>
@@ -19893,14 +19901,14 @@ DAYnjfkhGwwGg8FJY37IBoPBYHDS+H8JcUyIH4+F2QAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong> Normalized the input given maximum rgb values (255)</p>
+<p><strong>Answer:</strong> For preprocessing I converted the images to YUV, using only the Y layer as suggested by a fellow student. I used equalize_adaptthis to help with the low light situation and increase contrast uniformly. All data was normalized wrt 255 (8bit)</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### Generate data additional data (OPTIONAL!)</span>
@@ -19936,14 +19944,14 @@ DAYnjfkhGwwGg8FJY37IBoPBYHDS+H8JcUyIH4+F2QAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong></p>
+<p><strong>Answer:</strong> Used sklearn's train_test_split with 10% split to create validation input. We added a random state of 40 to shuffle the data. We also use shutffle from sklearn later to keep shuffling the input as we go through batches.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
@@ -20100,7 +20108,7 @@ DAYnjfkhGwwGg8FJY37IBoPBYHDS+H8JcUyIH4+F2QAAAABJRU5ErkJggg==
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>  2%|▏         | 3/138 [00:00&lt;00:04, 27.48it/s]</pre>
+<pre>  0%|          | 0/138 [00:00&lt;?, ?it/s]</pre>
 </div>
 </div>
 
@@ -20113,15 +20121,15 @@ DAYnjfkhGwwGg8FJY37IBoPBYHDS+H8JcUyIH4+F2QAAAABJRU5ErkJggg==
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.94it/s]
-  0%|          | 0/138 [00:00&lt;?, ?it/s]</pre>
+<pre>100%|██████████| 138/138 [00:03&lt;00:00, 39.19it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 47.31it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 1 ...
-Validation Accuracy = 0.538
+Validation Accuracy = 0.533
 
 </pre>
 </div>
@@ -20129,15 +20137,15 @@ Validation Accuracy = 0.538
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.15it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 44.94it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.78it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 47.35it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 2 ...
-Validation Accuracy = 0.825
+Validation Accuracy = 0.812
 
 </pre>
 </div>
@@ -20145,15 +20153,15 @@ Validation Accuracy = 0.825
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.17it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.06it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.48it/s]
+  3%|▎         | 4/138 [00:00&lt;00:03, 39.91it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 3 ...
-Validation Accuracy = 0.918
+Validation Accuracy = 0.922
 
 </pre>
 </div>
@@ -20161,15 +20169,15 @@ Validation Accuracy = 0.918
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:03&lt;00:00, 45.38it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.01it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.97it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 47.23it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 4 ...
-Validation Accuracy = 0.952
+Validation Accuracy = 0.955
 
 </pre>
 </div>
@@ -20177,8 +20185,8 @@ Validation Accuracy = 0.952
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.01it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.02it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.98it/s]
+  4%|▎         | 5/138 [00:00&lt;00:03, 41.59it/s]</pre>
 </div>
 </div>
 
@@ -20193,8 +20201,8 @@ Validation Accuracy = 0.971
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.65it/s]
-  4%|▎         | 5/138 [00:00&lt;00:03, 42.71it/s]</pre>
+<pre>100%|██████████| 138/138 [00:03&lt;00:00, 48.85it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 47.72it/s]</pre>
 </div>
 </div>
 
@@ -20209,15 +20217,15 @@ Validation Accuracy = 0.981
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.13it/s]
-  4%|▎         | 5/138 [00:00&lt;00:03, 44.10it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.74it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 47.51it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 7 ...
-Validation Accuracy = 0.980
+Validation Accuracy = 0.984
 
 </pre>
 </div>
@@ -20225,15 +20233,15 @@ Validation Accuracy = 0.980
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:03&lt;00:00, 45.28it/s]
-  4%|▎         | 5/138 [00:00&lt;00:03, 44.17it/s]</pre>
+<pre>100%|██████████| 138/138 [00:03&lt;00:00, 45.57it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 47.00it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 8 ...
-Validation Accuracy = 0.982
+Validation Accuracy = 0.986
 
 </pre>
 </div>
@@ -20241,15 +20249,15 @@ Validation Accuracy = 0.982
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.49it/s]
-  4%|▎         | 5/138 [00:00&lt;00:03, 43.63it/s]</pre>
+<pre>100%|██████████| 138/138 [00:03&lt;00:00, 48.14it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 46.97it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 9 ...
-Validation Accuracy = 0.985
+Validation Accuracy = 0.986
 
 </pre>
 </div>
@@ -20257,8 +20265,8 @@ Validation Accuracy = 0.985
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.93it/s]
-  4%|▎         | 5/138 [00:00&lt;00:03, 44.32it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.81it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 45.72it/s]</pre>
 </div>
 </div>
 
@@ -20273,15 +20281,15 @@ Validation Accuracy = 0.986
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.76it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 44.59it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.41it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 49.69it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 11 ...
-Validation Accuracy = 0.988
+Validation Accuracy = 0.986
 
 </pre>
 </div>
@@ -20289,15 +20297,15 @@ Validation Accuracy = 0.988
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.92it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 44.44it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 49.68it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 49.70it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 12 ...
-Validation Accuracy = 0.989
+Validation Accuracy = 0.986
 
 </pre>
 </div>
@@ -20305,8 +20313,8 @@ Validation Accuracy = 0.989
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:03&lt;00:00, 45.52it/s]
-  4%|▎         | 5/138 [00:00&lt;00:03, 43.16it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 49.71it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 49.55it/s]</pre>
 </div>
 </div>
 
@@ -20321,8 +20329,8 @@ Validation Accuracy = 0.990
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.22it/s]
-  4%|▎         | 5/138 [00:00&lt;00:03, 43.93it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 49.29it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 48.99it/s]</pre>
 </div>
 </div>
 
@@ -20337,14 +20345,30 @@ Validation Accuracy = 0.989
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.00it/s]
-  3%|▎         | 4/138 [00:00&lt;00:03, 39.56it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.97it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 48.75it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 15 ...
+Validation Accuracy = 0.992
+
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.14it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 45.62it/s]</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>EPOCH 16 ...
 Validation Accuracy = 0.991
 
 </pre>
@@ -20353,31 +20377,15 @@ Validation Accuracy = 0.991
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:03&lt;00:00, 48.13it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 44.36it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 16 ...
-Validation Accuracy = 0.990
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:03&lt;00:00, 43.76it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 46.29it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.78it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 45.27it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 17 ...
-Validation Accuracy = 0.990
+Validation Accuracy = 0.989
 
 </pre>
 </div>
@@ -20385,15 +20393,15 @@ Validation Accuracy = 0.990
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.58it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.66it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.81it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 49.17it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 18 ...
-Validation Accuracy = 0.990
+Validation Accuracy = 0.989
 
 </pre>
 </div>
@@ -20401,15 +20409,15 @@ Validation Accuracy = 0.990
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.40it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.72it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 49.34it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 45.14it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 19 ...
-Validation Accuracy = 0.990
+Validation Accuracy = 0.992
 
 </pre>
 </div>
@@ -20417,8 +20425,8 @@ Validation Accuracy = 0.990
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.03it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.77it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 49.00it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 49.33it/s]</pre>
 </div>
 </div>
 
@@ -20433,14 +20441,30 @@ Validation Accuracy = 0.991
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.50it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 46.33it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 49.26it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 49.27it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 21 ...
+Validation Accuracy = 0.993
+
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 49.38it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 48.78it/s]</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>EPOCH 22 ...
 Validation Accuracy = 0.991
 
 </pre>
@@ -20449,14 +20473,14 @@ Validation Accuracy = 0.991
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.41it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 46.01it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.06it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 46.32it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 22 ...
+<pre>EPOCH 23 ...
 Validation Accuracy = 0.990
 
 </pre>
@@ -20465,24 +20489,8 @@ Validation Accuracy = 0.990
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.56it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.92it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 23 ...
-Validation Accuracy = 0.992
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:03&lt;00:00, 45.84it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 44.85it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.16it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 45.45it/s]</pre>
 </div>
 </div>
 
@@ -20497,15 +20505,15 @@ Validation Accuracy = 0.992
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.33it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.88it/s]</pre>
+<pre>100%|██████████| 138/138 [00:03&lt;00:00, 45.81it/s]
+  4%|▎         | 5/138 [00:00&lt;00:03, 41.17it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 25 ...
-Validation Accuracy = 0.992
+Validation Accuracy = 0.993
 
 </pre>
 </div>
@@ -20513,46 +20521,14 @@ Validation Accuracy = 0.992
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.02it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 46.12it/s]</pre>
+<pre>100%|██████████| 138/138 [00:03&lt;00:00, 45.05it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 48.17it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 26 ...
-Validation Accuracy = 0.994
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.28it/s]
-  0%|          | 0/138 [00:00&lt;?, ?it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 27 ...
-Validation Accuracy = 0.992
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:03&lt;00:00, 45.84it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.72it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 28 ...
 Validation Accuracy = 0.991
 
 </pre>
@@ -20561,8 +20537,40 @@ Validation Accuracy = 0.991
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:03&lt;00:00, 44.62it/s]
-  0%|          | 0/138 [00:00&lt;?, ?it/s]</pre>
+<pre>100%|██████████| 138/138 [00:03&lt;00:00, 43.01it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 48.69it/s]</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>EPOCH 27 ...
+Validation Accuracy = 0.993
+
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>100%|██████████| 138/138 [00:03&lt;00:00, 42.41it/s]
+  3%|▎         | 4/138 [00:00&lt;00:03, 39.14it/s]</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>EPOCH 28 ...
+Validation Accuracy = 0.992
+
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.95it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 48.14it/s]</pre>
 </div>
 </div>
 
@@ -20577,126 +20585,14 @@ Validation Accuracy = 0.993
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:03&lt;00:00, 45.03it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 44.51it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.50it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 47.79it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>EPOCH 30 ...
-Validation Accuracy = 0.993
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.42it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.89it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 31 ...
-Validation Accuracy = 0.992
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.24it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.02it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 32 ...
-Validation Accuracy = 0.991
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.96it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 46.14it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 33 ...
-Validation Accuracy = 0.995
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.62it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.69it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 34 ...
-Validation Accuracy = 0.992
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.08it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.89it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 35 ...
-Validation Accuracy = 0.995
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.66it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.50it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 36 ...
-Validation Accuracy = 0.994
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:03&lt;00:00, 45.25it/s]
-  0%|          | 0/138 [00:00&lt;?, ?it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 37 ...
 Validation Accuracy = 0.989
 
 </pre>
@@ -20705,14 +20601,14 @@ Validation Accuracy = 0.989
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.35it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 44.85it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.76it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 46.27it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 38 ...
+<pre>EPOCH 31 ...
 Validation Accuracy = 0.993
 
 </pre>
@@ -20721,159 +20617,15 @@ Validation Accuracy = 0.993
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.24it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 46.10it/s]</pre>
+<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.05it/s]
+  4%|▎         | 5/138 [00:00&lt;00:02, 48.30it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 39 ...
-Validation Accuracy = 0.994
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:03&lt;00:00, 45.86it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.41it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 40 ...
-Validation Accuracy = 0.993
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.03it/s]
-  3%|▎         | 4/138 [00:00&lt;00:03, 36.87it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 41 ...
-Validation Accuracy = 0.990
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:03&lt;00:00, 45.90it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 44.53it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 42 ...
-Validation Accuracy = 0.994
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:03&lt;00:00, 45.69it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 46.25it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 43 ...
-Validation Accuracy = 0.993
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.08it/s]
-  0%|          | 0/138 [00:00&lt;?, ?it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 44 ...
-Validation Accuracy = 0.991
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.55it/s]
-  4%|▎         | 5/138 [00:00&lt;00:02, 45.83it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 45 ...
-Validation Accuracy = 0.993
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.56it/s]
-  0%|          | 0/138 [00:00&lt;?, ?it/s]</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 46 ...
-Validation Accuracy = 0.994
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:03&lt;00:00, 45.49it/s]
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 47 ...
-Validation Accuracy = 0.995
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.33it/s]
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 48 ...
-Validation Accuracy = 0.994
+<pre>EPOCH 32 ...
+Validation Accuracy = 0.992
 
 </pre>
 </div>
@@ -20882,14 +20634,14 @@ Validation Accuracy = 0.994
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
 <pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.51it/s]
-</pre>
+  4%|▎         | 5/138 [00:00&lt;00:02, 48.64it/s]</pre>
 </div>
 </div>
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 49 ...
-Validation Accuracy = 0.993
+<pre>EPOCH 33 ...
+Validation Accuracy = 0.991
 
 </pre>
 </div>
@@ -20897,178 +20649,7 @@ Validation Accuracy = 0.993
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.89it/s]
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 50 ...
-Validation Accuracy = 0.994
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.24it/s]
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 51 ...
-Validation Accuracy = 0.994
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.10it/s]
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 52 ...
-Validation Accuracy = 0.992
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.70it/s]
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 53 ...
-Validation Accuracy = 0.993
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.52it/s]
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 54 ...
-Validation Accuracy = 0.993
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 48.63it/s]
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 55 ...
-Validation Accuracy = 0.993
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.62it/s]
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 56 ...
-Validation Accuracy = 0.992
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.54it/s]
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 57 ...
-Validation Accuracy = 0.992
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 46.73it/s]
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 58 ...
-Validation Accuracy = 0.993
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:02&lt;00:00, 47.37it/s]
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 59 ...
-Validation Accuracy = 0.995
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>100%|██████████| 138/138 [00:03&lt;00:00, 44.92it/s]
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>EPOCH 60 ...
-Validation Accuracy = 0.993
-
-Model saved
-</pre>
+<pre> 54%|█████▍    | 75/138 [00:01&lt;00:01, 48.12it/s]</pre>
 </div>
 </div>
 
@@ -21091,7 +20672,16 @@ Model saved
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong> Modelled after LeNet - 3 Conv layers (32/64/128 depth) with stride 2 maxpooling , 2 FC layers 1024/512 output size with dropout</p>
+<h2 id="Answer:-Our-network-is-a-slightly-modified-version-of-LeNet-as-explained-below:"><strong>Answer:</strong> Our network is a slightly modified version of LeNet as explained below:<a class="anchor-link" href="#Answer:-Our-network-is-a-slightly-modified-version-of-LeNet-as-explained-below:">&#182;</a></h2><p>Layer 1: Input is the raw image sized 32x32x1 (Y channel only). We user a filter/kernel size of 5x5 and a depth of 32 to produce a 32x32x32 output from the convnet since we use SAME padding. RelU activation after which we use a 2-stride maxpooling layer to reduce output to 16x16x32</p>
+<p>Layer 2: 5x5 kernel/filter size. Input = 16x16x32, Depth 64, Convnet Output = 16x16x64. Relu Activation. 2-Stride 
+Maxpooling. Final output 8x8x64</p>
+<p>Layer 3: 5x5 kernel/filter size. Input = 8x8x32, Depth 128, Convnet Output = 8x8x128. Relu Activation. 2-Stride 
+Maxpooling. Final output 4x4x128</p>
+<p>We flatten this to feed it to a FC layer. Input size is 4<em>4</em>128 = 2048</p>
+<p>Layer 4: FC Layer. Input = 2048, Output = 1024. Relu activation with dropout of keep_prob=0.4
+Layer 5: FC Layer. Input = 1024, Output = 512. Relu activation with dropout of keep_prob=0.4</p>
+<p>Followed by a classification layer.</p>
+<p>We use the adam optimizer to minimize the softmax cross entropy (using the softmax_cross_entropy_with_logits function) and minimize the average.</p>
 
 </div>
 </div>
@@ -21144,7 +20734,11 @@ Model saved
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong> Adam Optimizer, 256 batch with 0.001 learning rate (I have enough ram on my Gefore 1070 :) )- 60 epochs.</p>
+<p><strong>Answer:</strong> Adam Optimizer, 256 batch with 0.001 learning rate (I have enough ram on my Gefore 1070 :) )- 60 epochs. mu = 0 and sigma = 0.1 for the normal distribution of initial variable values.</p>
+<p>the sigma didn't seem to make too much of a difference. I used it to try to optimize more, but compared to the default value of 1 it didnt make much of a difference.</p>
+<p>0.001 learning rate was chosen since my test accuracy went down a bit with 0.005, and 0.0005 was too slow to converge.</p>
+<p>256 batch size since I have enough memory to support it - using a bigger batch size speeds up the training :)</p>
+<p>60 epochs since I didnt want it to overfit and accuracy increases fell drastically after 50 epochs.</p>
 
 </div>
 </div>
@@ -22448,7 +22042,7 @@ C1nIQhaykIXcpbIwAhaykIUsZCELuUvl/wdYHmH0yf9MMQAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer:</strong></p>
+<p><strong>Answer:</strong> Seems like 2/5 got classified correctly = 40% accuracy. Abysmal! By comparison - if these items were taken from the test data set, we would've been able to most likely identify all of them due to our 96.5% accuracy. We most likely need way way more realistic and varied data.</p>
 
 </div>
 </div>
@@ -22460,7 +22054,6 @@ C1nIQhaykIXcpbIwAhaykIUsZCELuUvl/wdYHmH0yf9MMQAAAABJRU5ErkJggg==
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### Visualize the softmax probabilities here.</span>
 <span class="c1">### Feel free to use as many code cells as needed.</span>
-<span class="n">Seems</span> <span class="n">like</span> <span class="mi">2</span><span class="o">/</span><span class="mi">5</span> <span class="n">got</span> <span class="n">classified</span> <span class="n">correctly</span> <span class="o">=</span> <span class="mi">40</span><span class="o">%</span> <span class="n">accuracy</span><span class="o">.</span> <span class="n">Abysmal</span><span class="err">!</span>
 </pre></div>
 
 </div>
